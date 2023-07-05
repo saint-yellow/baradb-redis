@@ -3,7 +3,7 @@ module github.com/saint-yellow/baradb/redis
 go 1.20
 
 require (
-	github.com/saint-yellow/baradb v0.0.0-20230702103710-a69cb5c73cc9
+	github.com/saint-yellow/baradb v0.1.0
 	github.com/stretchr/testify v1.8.4
 	github.com/tidwall/redcon v1.6.2
 )
