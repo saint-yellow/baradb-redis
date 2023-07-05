@@ -3,14 +3,13 @@ package ds
 import (
 	"testing"
 
-	"github.com/saint-yellow/baradb"
 	"github.com/saint-yellow/baradb/utils"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDS_LPush(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32
 	var err error
@@ -27,8 +26,8 @@ func TestDS_LPush(t *testing.T) {
 }
 
 func TestDS_RPush(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32
 	var err error
@@ -45,8 +44,8 @@ func TestDS_RPush(t *testing.T) {
 }
 
 func TestDS_LPop(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var element []byte
 	var err error
@@ -89,8 +88,8 @@ func TestDS_LPop(t *testing.T) {
 }
 
 func TestDS_RPop(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var element []byte
 	var err error
@@ -133,8 +132,8 @@ func TestDS_RPop(t *testing.T) {
 }
 
 func TestDS_LLen(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32
 	var err error

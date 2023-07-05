@@ -9,8 +9,8 @@ import (
 )
 
 func TestDS_Del(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.Set(utils.NewKey(2), utils.NewRandomValue(3), 0)
 	value, err := ds.Get(utils.NewKey(2))
@@ -26,8 +26,8 @@ func TestDS_Del(t *testing.T) {
 }
 
 func TestDS_Type(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var dt dataType
 	var err error

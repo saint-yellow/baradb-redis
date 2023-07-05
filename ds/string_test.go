@@ -10,14 +10,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var testingDBOptions = baradb.DefaultDBOptions
+
+// preparations for tests
+func init() {
+	testingDBOptions.Directory = "/tmp/baradb-redis"
+	os.RemoveAll(testingDBOptions.Directory)
+}
+
+// destroyDS a teardown method for clearing resources after testing
 func destroyDS(ds *DS, dir string) {
 	ds.db.Close()
 	os.RemoveAll(dir)
 }
 
 func TestDS_New(t *testing.T) {
-	ds, err := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, err := NewDS(testingDBOptions)
+	defer destroyDS(ds, (testingDBOptions.Directory))
 
 	assert.Nil(t, err)
 	assert.NotNil(t, ds)
@@ -25,10 +34,10 @@ func TestDS_New(t *testing.T) {
 }
 
 func TestDS_Set(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
+	ds, _ := NewDS(testingDBOptions)
 	defer func() {
 		ds.db.Close()
-		os.RemoveAll(baradb.DefaultDBOptions.Directory)
+		os.RemoveAll((testingDBOptions.Directory))
 	}()
 
 	var err error
@@ -39,8 +48,8 @@ func TestDS_Set(t *testing.T) {
 }
 
 func TestDS_Get(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, (testingDBOptions.Directory))
 
 	ds.Set(utils.NewKey(114), utils.NewKey(114), 0)
 	ds.Set(utils.NewKey(514), utils.NewKey(514), time.Second*3)

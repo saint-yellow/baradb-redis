@@ -3,13 +3,12 @@ package ds
 import (
 	"testing"
 
-	"github.com/saint-yellow/baradb"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMetadata_Decode(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.HSet([]byte("key-1"), []byte("field-1"), []byte("value-1"))
 	md1, err := ds.getMetadata([]byte("key-1"), Hash)
@@ -27,8 +26,8 @@ func TestMetadata_Decode(t *testing.T) {
 }
 
 func TestMetadata_Encode(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.HSet([]byte("key-1"), []byte("field-1"), []byte("value-1"))
 	md, err := ds.getMetadata([]byte("key-1"), Hash)

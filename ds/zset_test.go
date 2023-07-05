@@ -8,8 +8,8 @@ import (
 )
 
 func TestDS_ZAdd(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var exist bool
 	var err error
@@ -26,8 +26,8 @@ func TestDS_ZAdd(t *testing.T) {
 }
 
 func TestDS_ZScore(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var value float64
 	var err error

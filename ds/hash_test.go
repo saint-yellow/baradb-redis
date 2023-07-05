@@ -9,8 +9,8 @@ import (
 )
 
 func TestDS_HSet(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var isNewKey bool
 	var err error
@@ -32,8 +32,8 @@ func TestDS_HSet(t *testing.T) {
 }
 
 func TestDS_HGet(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var value []byte
 	var err error
@@ -62,8 +62,8 @@ func TestDS_HGet(t *testing.T) {
 }
 
 func TestDS_HDel(t *testing.T) {
-	ds, _ := NewDS(baradb.DefaultDBOptions)
-	defer destroyDS(ds, baradb.DefaultDBOptions.Directory)
+	ds, _ := NewDS(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var exist bool
 	var err error
