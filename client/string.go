@@ -1,4 +1,4 @@
-package commands
+package client
 
 import (
 	"github.com/tidwall/redcon"
@@ -6,7 +6,7 @@ import (
 	"github.com/saint-yellow/baradb/redis/ds"
 )
 
-func Set(ds *ds.DS, args ...[]byte) (any, error) {
+func set(ds *ds.DS, args ...[]byte) (any, error) {
 	var err error
 	if len(args) != 2 {
 		err = newErrWrongNumberOfArguments("set")
@@ -18,7 +18,7 @@ func Set(ds *ds.DS, args ...[]byte) (any, error) {
 	return redcon.SimpleString("OK"), err
 }
 
-func Get(ds *ds.DS, args ...[]byte) (any, error) {
+func get(ds *ds.DS, args ...[]byte) (any, error) {
 	var err error
 	if len(args) != 1 {
 		err = newErrWrongNumberOfArguments("get")

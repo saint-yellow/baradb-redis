@@ -49,14 +49,6 @@ func TestDS_RPush(t *testing.T) {
 	size, err = ds.RPush(key, []byte("element-2"))
 	assert.Equal(t, uint32(2), size)
 	assert.Nil(t, err)
-
-    elements := [][]byte{
-		[]byte("element-3"),
-		[]byte("element-4"),
-	}
-	size , err = ds.RPush(key, elements...)
-	assert.Equal(t, uint32(4), size)
-	assert.Nil(t, err)
 }
 
 func TestDS_LPop(t *testing.T) {

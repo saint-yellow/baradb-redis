@@ -30,7 +30,7 @@ func (lk *listInternalKey) encode() []byte {
 	return buffer
 }
 
-func (ds *DS) listPush(key, element []byte, isLeft bool) (uint32, error) {
+func (ds *DS) listPush(key []byte, elements [][]byte, isLeft bool) (uint32, error) {
 	md, err := ds.getMetadata(key, List)
 	if err != nil {
 		return 0, err
@@ -48,14 +48,16 @@ func (ds *DS) listPush(key, element []byte, isLeft bool) (uint32, error) {
 	encKey := lk.encode()
 
 	wb := ds.db.NewWriteBatch(baradb.DefaultWriteBatchOptions)
-	md.size++
+	md.size += uint32(len(elements))
 	if isLeft {
-		md.head--
+		md.head -= uint64(len(elements))
 	} else {
-		md.tail++
+		md.tail += uint64(len(elements))
 	}
 	wb.Put(key, encodeMetadata(md))
-	wb.Put(encKey, element)
+	for _, element := range elements {
+		wb.Put(encKey, element)
+	}
 	if err = wb.Commit(); err != nil {
 		return 0, err
 	}
@@ -64,13 +66,13 @@ func (ds *DS) listPush(key, element []byte, isLeft bool) (uint32, error) {
 }
 
 // LPush Redis LPUSH
-func (ds *DS) LPush(key, element []byte) (uint32, error) {
-	return ds.listPush(key, element, true)
+func (ds *DS) LPush(key []byte, elements ...[]byte) (uint32, error) {
+	return ds.listPush(key, elements, true)
 }
 
 // RPush Redis RPUSH
-func (ds *DS) RPush(key, element []byte) (uint32, error) {
-	return ds.listPush(key, element, false)
+func (ds *DS) RPush(key []byte, elements ...[]byte) (uint32, error) {
+	return ds.listPush(key, elements, false)
 }
 
 func (ds *DS) listPop(key []byte, isLeft bool) ([]byte, error) {
