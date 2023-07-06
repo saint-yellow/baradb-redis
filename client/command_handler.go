@@ -4,7 +4,7 @@ import (
 	"github.com/saint-yellow/baradb/redis/ds"
 )
 
-// commandHandler type of a available Redis command handler
+// commandHandler is a wrapper of Redis commands
 type commandHandler func(service *ds.DS, arguments ...[]byte) (any, error)
 
 // supportedCommands registers available Redis command handlers
