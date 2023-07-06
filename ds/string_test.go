@@ -25,7 +25,7 @@ func destroyDS(ds *DS, dir string) {
 }
 
 func TestDS_New(t *testing.T) {
-	ds, err := NewDS(testingDBOptions)
+	ds, err := New(testingDBOptions)
 	defer destroyDS(ds, (testingDBOptions.Directory))
 
 	assert.Nil(t, err)
@@ -34,7 +34,7 @@ func TestDS_New(t *testing.T) {
 }
 
 func TestDS_Set(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer func() {
 		ds.db.Close()
 		os.RemoveAll((testingDBOptions.Directory))
@@ -48,7 +48,7 @@ func TestDS_Set(t *testing.T) {
 }
 
 func TestDS_Get(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, (testingDBOptions.Directory))
 
 	ds.Set(utils.NewKey(114), utils.NewKey(114), 0)

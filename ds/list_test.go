@@ -8,7 +8,7 @@ import (
 )
 
 func TestDS_LPush(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32
@@ -34,7 +34,7 @@ func TestDS_LPush(t *testing.T) {
 }
 
 func TestDS_RPush(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32
@@ -60,7 +60,7 @@ func TestDS_RPush(t *testing.T) {
 }
 
 func TestDS_LPop(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var element []byte
@@ -104,7 +104,7 @@ func TestDS_LPop(t *testing.T) {
 }
 
 func TestDS_RPop(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var element []byte
@@ -148,7 +148,7 @@ func TestDS_RPop(t *testing.T) {
 }
 
 func TestDS_LLen(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var size uint32

@@ -2,7 +2,10 @@ package server
 
 import (
 	"log"
+	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 
 	"github.com/tidwall/redcon"
 
@@ -13,21 +16,28 @@ import (
 type RedisServer struct {
 	DBs    map[int]*ds.DS
 	Server *redcon.Server
+	Signal chan os.Signal
 	mu     *sync.RWMutex
 }
 
-func NewRedisServer(server *redcon.Server) *RedisServer {
+func New(service *ds.DS) *RedisServer {
 	rs := &RedisServer{
-		DBs:    make(map[int]*ds.DS),
-		Server: server,
+		DBs:    map[int]*ds.DS{
+			0: service,
+		},
+		Signal: make(chan os.Signal, 1),
 		mu:     new(sync.RWMutex),
 	}
+	signal.Notify(rs.Signal, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	return rs
 }
 
 func (rs *RedisServer) Listen() {
 	log.Println("server running, ready to accept connections")
-	rs.Server.ListenAndServe()
+	if err := rs.Server.ListenAndServe(); err != nil {
+		log.Fatalf("listen and serve err, fail to start. %v", err)
+		return
+	}
 }
 
 func (rs *RedisServer) Accept(conn redcon.Conn) bool {
@@ -41,9 +51,14 @@ func (rs *RedisServer) Accept(conn redcon.Conn) bool {
 	return true
 }
 
-func (rs *RedisServer) Close(conn redcon.Conn, err error) {
+func (rs *RedisServer) Stop() {
 	for _, db := range rs.DBs {
-		db.Close()
+		if err := db.Close(); err != nil {
+			log.Fatalf("close db err: %v", err)
+		}
 	}
-	rs.Server.Close()
+	if err := rs.Server.Close(); err != nil {
+		log.Fatalf("close server err: %v", err)
+	}
+	log.Println("baradb-redis is ready to exit, bye bye...")
 }

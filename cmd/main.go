@@ -12,21 +12,21 @@ import (
 const address = "127.0.0.1:6378"
 
 func main() {
-	service, err := ds.NewDS(baradb.DefaultDBOptions)
+	service, err := ds.New(baradb.DefaultDBOptions)
 	if err != nil {
 		panic(err)
 	}
 
-	rs := server.NewRedisServer(nil)
-	rs.DBs = make(map[int]*ds.DS)
-	rs.DBs[0] = service
-	server := redcon.NewServer(
+	rs := server.New(service)
+	innerServer := redcon.NewServer(
 		address,
 		client.ExecuteClientCommand,
 		rs.Accept,
-		rs.Close,
+		func(conn redcon.Conn, err error) {},
 	)
-	rs.Server = server
+	rs.Server = innerServer
 
-	rs.Listen()
+	go rs.Listen()
+	<-rs.Signal
+	rs.Stop()
 }

@@ -7,8 +7,8 @@ type DS struct {
 	db *baradb.DB // DB engine
 }
 
-// NewDS initializes a Redis data strucure
-func NewDS(opts baradb.DBOptions) (*DS, error) {
+// New initializes a Redis data strucure
+func New(opts baradb.DBOptions) (*DS, error) {
 	db, err := baradb.LaunchDB(opts)
 	if err != nil {
 		return nil, err

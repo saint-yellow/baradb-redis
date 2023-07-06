@@ -7,7 +7,7 @@ import (
 )
 
 func TestMetadata_Decode(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.HSet([]byte("key-1"), []byte("field-1"), []byte("value-1"))
@@ -26,7 +26,7 @@ func TestMetadata_Decode(t *testing.T) {
 }
 
 func TestMetadata_Encode(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.HSet([]byte("key-1"), []byte("field-1"), []byte("value-1"))

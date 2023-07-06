@@ -8,7 +8,7 @@ import (
 )
 
 func TestDS_ZAdd(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var exist bool
@@ -26,7 +26,7 @@ func TestDS_ZAdd(t *testing.T) {
 }
 
 func TestDS_ZScore(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var value float64

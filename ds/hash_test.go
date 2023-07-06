@@ -9,7 +9,7 @@ import (
 )
 
 func TestDS_HSet(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var isNewKey bool
@@ -32,7 +32,7 @@ func TestDS_HSet(t *testing.T) {
 }
 
 func TestDS_HGet(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var value []byte
@@ -62,7 +62,7 @@ func TestDS_HGet(t *testing.T) {
 }
 
 func TestDS_HDel(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var exist bool

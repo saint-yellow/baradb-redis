@@ -7,7 +7,7 @@ import (
 )
 
 func TestDS_SAdd(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var ok bool
@@ -37,14 +37,14 @@ func TestDS_SAdd(t *testing.T) {
 }
 
 func TestDS_SMembers(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	// TODO: to be implemented
 }
 
 func TestDS_SIsMember(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var ok bool
@@ -70,7 +70,7 @@ func TestDS_SIsMember(t *testing.T) {
 }
 
 func TestDS_SRem(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var ok bool

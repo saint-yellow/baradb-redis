@@ -9,7 +9,7 @@ import (
 )
 
 func TestDS_Del(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	ds.Set(utils.NewKey(2), utils.NewRandomValue(3), 0)
@@ -26,7 +26,7 @@ func TestDS_Del(t *testing.T) {
 }
 
 func TestDS_Type(t *testing.T) {
-	ds, _ := NewDS(testingDBOptions)
+	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
 	var dt dataType
