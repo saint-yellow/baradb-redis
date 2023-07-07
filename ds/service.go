@@ -9,7 +9,7 @@ type DS struct {
 
 // New initializes a Redis data strucure
 func New(opts baradb.DBOptions) (*DS, error) {
-	db, err := baradb.LaunchDB(opts)
+	db, err := baradb.Launch(opts)
 	if err != nil {
 		return nil, err
 	}
