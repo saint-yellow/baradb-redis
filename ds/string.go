@@ -3,6 +3,8 @@ package ds
 import (
 	"encoding/binary"
 	"time"
+
+	"github.com/saint-yellow/baradb"
 )
 
 // Set redis SET
@@ -31,6 +33,21 @@ func (ds *DS) Set(key []byte, value []byte, ttl time.Duration) error {
 	return ds.db.Put(key, encValue)
 }
 
+// SetNx redis SETNX
+func (ds *DS) SetNx(key []byte, value []byte) bool {
+	_, err := ds.db.Get(key)
+	if err == nil {
+		return false
+	}
+
+	if err != baradb.ErrKeyNotFound {
+		return false
+	}
+
+	err = ds.Set(key, value, 0)
+	return err == nil
+}
+
 // Get redis GET
 func (ds *DS) Get(key []byte) ([]byte, error) {
 	encValue, err := ds.db.Get(key)
@@ -51,4 +68,13 @@ func (ds *DS) Get(key []byte) ([]byte, error) {
 	index += n
 	payload := encValue[index:]
 	return payload, nil
+}
+
+// StrLen redis STRLEN
+func (ds *DS) StrLen(key []byte) int {
+	value, err := ds.Get(key)
+	if err != nil {
+		return 0
+	}
+	return len(value)
 }

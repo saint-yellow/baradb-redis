@@ -20,3 +20,13 @@ func (ds *DS) Type(key []byte) (dataType, error) {
 	dt := value[0]
 	return dt, nil
 }
+
+// Exists redis EXISTS
+func (ds *DS) Exists(key []byte) bool {
+	_, err := ds.Type(key)
+	if err != nil {
+		return err == ErrNilValue
+	}
+
+	return true
+}

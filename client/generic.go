@@ -25,6 +25,16 @@ func datatype(rds *ds.DS, args ...[]byte) (any, error) {
 	return dtn, nil
 }
 
+func exists(rds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 1 {
+		return nil, newErrWrongNumberOfArguments("exists")
+	}
+
+	key := args[0]
+	exists := rds.Exists(key)
+	return exists, nil
+}
+
 func dataTypeName(dt byte) string {
 	switch dt {
 	case ds.String:

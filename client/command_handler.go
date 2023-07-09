@@ -10,11 +10,15 @@ type commandHandler func(service *ds.DS, arguments ...[]byte) (any, error)
 // supportedCommands registers available Redis command handlers
 var supportedCommands = map[string]commandHandler{
 	// commands available for all data types
-	"type": datatype,
+	"del":    del,
+	"type":   datatype,
+	"exists": exists,
 
 	// commands available for string only
-	"set": set,
-	"get": get,
+	"set":    set,
+	"get":    get,
+	"setnx":  setnx,
+	"strlen": strlen,
 
 	// commands available for list only
 	"llen":  llen,
