@@ -3,8 +3,22 @@ package ds
 import (
 	"testing"
 
+	"github.com/saint-yellow/baradb/utils"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestSetInternalKey_Decode(t *testing.T) {
+	sk1 := &setInternalKey{
+		key:     []byte("114"),
+		version: 114514,
+		member:  []byte("514"),
+	}
+	encKey := sk1.encode()
+	sk2 := decodeSetInternalKey(encKey)
+	assert.EqualValues(t, sk1, sk2)
+	t.Log(sk1)
+	t.Log(sk2)
+}
 
 func TestDS_SAdd(t *testing.T) {
 	ds, _ := New(testingDBOptions)
@@ -40,7 +54,23 @@ func TestDS_SMembers(t *testing.T) {
 	ds, _ := New(testingDBOptions)
 	defer destroyDS(ds, testingDBOptions.Directory)
 
-	// TODO: to be implemented
+	var members [][]byte
+	var err error
+
+	members, err = ds.SMembers([]byte("unknown"))
+	assert.Nil(t, err)
+	assert.Nil(t, members)
+
+	key := utils.NewKey(0)
+	values := make([][]byte, 3)
+	for i := 0; i < 3; i++ {
+		values[i] = utils.NewKey(i)
+		ds.SAdd(key, values[i])
+	}
+
+	members, err = ds.SMembers(key)
+	assert.Nil(t, err)
+	assert.EqualValues(t, values, members)
 }
 
 func TestDS_SIsMember(t *testing.T) {
@@ -93,4 +123,27 @@ func TestDS_SRem(t *testing.T) {
 	ok, err = ds.SIsMember([]byte("set-1"), []byte("member-1"))
 	assert.False(t, ok)
 	assert.Nil(t, err)
+}
+
+func TestDS_SCard(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var count uint32 
+
+	count = ds.SCard([]byte("unknown"))
+	assert.Equal(t, uint32(0), count)
+
+	key := []byte("key-1")
+	for i := 1; i <= 10; i++ {
+		ds.SAdd(key, utils.NewKey(i))
+	}
+	count = ds.SCard(key)
+	assert.Equal(t, uint32(10), count)
+
+	for i := 10; i >= 1; i-- {
+		ds.SRem(key, utils.NewKey(i))
+		assert.Equal(t, count-1, ds.SCard(key))
+		count -= 1 
+	}
 }

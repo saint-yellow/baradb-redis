@@ -24,4 +24,11 @@ var supportedCommands = map[string]commandHandler{
 	"llen":  llen,
 	"lpush": lpush,
 	"rpush": rpush,
+
+	// commands available for set only
+	"sadd":      sadd,
+	"sismember": sismember,
+	"srem":      srem,
+	"smembers":  smembers,
+	"scard":     scard,
 }
