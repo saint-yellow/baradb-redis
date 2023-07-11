@@ -7,7 +7,7 @@ import (
 	"github.com/saint-yellow/baradb"
 	"github.com/tidwall/redcon"
 
-	"github.com/saint-yellow/baradb/redis/ds"
+	"github.com/saint-yellow/baradb-redis/ds"
 )
 
 type RedisClient struct {

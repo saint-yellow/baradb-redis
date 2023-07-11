@@ -3,7 +3,7 @@ package client
 import (
 	"github.com/tidwall/redcon"
 
-	"github.com/saint-yellow/baradb/redis/ds"
+	"github.com/saint-yellow/baradb-redis/ds"
 )
 
 func set(ds *ds.DS, args ...[]byte) (any, error) {

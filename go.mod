@@ -1,4 +1,4 @@
-module github.com/saint-yellow/baradb/redis
+module github.com/saint-yellow/baradb-redis
 
 go 1.20
 

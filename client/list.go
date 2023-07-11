@@ -1,6 +1,6 @@
 package client
 
-import "github.com/saint-yellow/baradb/redis/ds"
+import "github.com/saint-yellow/baradb-redis/ds"
 
 func lpush(ds *ds.DS, args ...[]byte) (any, error) {
 	if len(args) < 2 {

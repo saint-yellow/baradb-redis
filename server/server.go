@@ -9,8 +9,8 @@ import (
 
 	"github.com/tidwall/redcon"
 
-	"github.com/saint-yellow/baradb/redis/client"
-	"github.com/saint-yellow/baradb/redis/ds"
+	"github.com/saint-yellow/baradb-redis/client"
+	"github.com/saint-yellow/baradb-redis/ds"
 )
 
 type RedisServer struct {
@@ -22,7 +22,7 @@ type RedisServer struct {
 
 func New(service *ds.DS) *RedisServer {
 	rs := &RedisServer{
-		DBs:    map[int]*ds.DS{
+		DBs: map[int]*ds.DS{
 			0: service,
 		},
 		Signal: make(chan os.Signal, 1),

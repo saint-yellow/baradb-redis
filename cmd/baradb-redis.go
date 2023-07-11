@@ -4,9 +4,9 @@ import (
 	"github.com/saint-yellow/baradb"
 	"github.com/tidwall/redcon"
 
-	"github.com/saint-yellow/baradb/redis/client"
-	"github.com/saint-yellow/baradb/redis/ds"
-	"github.com/saint-yellow/baradb/redis/server"
+	"github.com/saint-yellow/baradb-redis/client"
+	"github.com/saint-yellow/baradb-redis/ds"
+	"github.com/saint-yellow/baradb-redis/server"
 )
 
 const address = "127.0.0.1:6378"

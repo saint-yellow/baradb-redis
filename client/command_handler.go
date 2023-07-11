@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/saint-yellow/baradb/redis/ds"
+	"github.com/saint-yellow/baradb-redis/ds"
 )
 
 // commandHandler is a wrapper of Redis commands
