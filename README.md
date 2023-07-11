@@ -37,7 +37,7 @@ OK
 
 ## Chagelog 
 
-### v0.1.0 - 2023-07-11
+### v0.1.2 - 2023-07-11
 Implemented commands: 
     Generic: `DEL`, `TYPE`, `EXISTS`
     String: `SET`, `GET`, `SETNX`, `STRLEN`
