@@ -1,6 +1,6 @@
 # baradb-redis
 
-This repo is a Redis implementation based on [saint-yellow/baradb](https://github.com/saint-yellow/baradb), a Bitcask K/V storage engine.
+This repo is a Redis implementation based on [baradb](https://github.com/saint-yellow/baradb), a Bitcask K/V storage engine.
 
 It provides a service on the top of Bitcask K/V storage engine. With the service, it could be easy to support Redis data types and implement Redis commands.
 
@@ -39,10 +39,10 @@ OK
 
 ### v0.1.2 - 2023-07-11
 Implemented commands: 
-    Generic: `DEL`, `TYPE`, `EXISTS`
-    String: `SET`, `GET`, `SETNX`, `STRLEN`
-    List: `LLEN`, `LPUSH`, `RPUSH`
-    Set: `SADD`, `SISMEMBER`, `SMEMBERS`, `SCARD`
+    - Generic: `DEL`, `TYPE`, `EXISTS`
+    - String: `SET`, `GET`, `SETNX`, `STRLEN`
+    - List: `LLEN`, `LPUSH`, `RPUSH`
+    - Set: `SADD`, `SISMEMBER`, `SMEMBERS`, `SCARD`
 
 ## Contributing
 
