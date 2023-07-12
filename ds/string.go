@@ -78,3 +78,26 @@ func (ds *DS) StrLen(key []byte) int {
 	}
 	return len(value)
 }
+
+// Append redis APPEND
+func (ds *DS) Append(key, value []byte) (int, error) {
+	exists := ds.Exists(key)
+	if !exists {
+		err := ds.Set(key, value, 0)
+		if err != nil {
+			return 0, err
+		}
+		return len(value), nil
+	}
+
+	oldValue, err := ds.Get(key)
+	if err != nil {
+		return 0, err
+	}
+
+	err = ds.Set(key, append(oldValue, value...), 0)
+	if err != nil {
+		return 0, err
+	}
+	return len(oldValue) + len(value), nil
+}

@@ -55,3 +55,12 @@ func strlen(ds *ds.DS, args ...[]byte) (any, error) {
 	length := ds.StrLen(key)
 	return length, nil
 }
+
+func strappend(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 2 {
+		return nil, newErrWrongNumberOfArguments("append")
+	}
+
+	key, value := args[0], args[1]
+	return ds.Append(key, value)
+}

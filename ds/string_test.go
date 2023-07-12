@@ -130,3 +130,29 @@ func TestDS_StrLen(t *testing.T) {
 	length = ds.StrLen([]byte("114"))
 	assert.Equal(t, len(value), length)
 }
+
+func TestDS_Append(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var length int
+	var err error
+
+	key := []byte("key001")
+	value1, value2 := []byte("value001"), []byte("value002")
+
+	length, err = ds.Append(key, value1)
+	assert.Nil(t, err)
+	assert.Equal(t, len(value1), length)
+
+	length, err = ds.Append(key, value2)
+	assert.Nil(t, err)
+	assert.Equal(t, len(value1)+len(value2), length)
+
+	err = ds.db.Delete(key)
+	assert.Nil(t, err)
+
+	length, err = ds.Append(key, value2)
+	assert.Nil(t, err)
+	assert.Equal(t, len(value2), length)
+}

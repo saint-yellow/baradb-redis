@@ -19,6 +19,7 @@ var supportedCommands = map[string]commandHandler{
 	"get":    get,
 	"setnx":  setnx,
 	"strlen": strlen,
+	"append": strappend,
 
 	// commands available for list only
 	"llen":  llen,
