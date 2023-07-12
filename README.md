@@ -1,7 +1,6 @@
 # baradb-redis
 
-This repo is a Redis implementation based on [baradb](https://github.com/saint-yellow/baradb), a Bitcask K/V storage engine.
-
+**baradb-redis** is a Redis implementation based on [baradb](https://github.com/saint-yellow/baradb), a Bitcask K/V storage engine.
 It provides a service on the top of Bitcask K/V storage engine. With the service, it could be easy to support Redis data types and implement Redis commands.
 
 ## Install
@@ -9,14 +8,13 @@ It provides a service on the top of Bitcask K/V storage engine. With the service
 ```shell 
 $ go install github.com/saint-yellow/baradb-redis@latest 
 ```
-
-This will add a binary file called baradb-redis to you $GOPATH/bin 
+Executing the command above will add a binary file called baradb-redis to you `$GOPATH/bin`.
 
 ## Usage
 
 It is similar to using Redis. Start the server and use a Redis client to connect to the server.
 
-Suppose $GOPATH/bin/baradb-redis is in you $PATH, you can use it like this:
+Suppose `$GOPATH/bin/baradb-redis` is in you `$PATH`, you can use it like this:
 
 ```
 $ baradb-redis &
@@ -32,17 +30,18 @@ OK
 
 ## Roadmap 
 
-1. Support `String`, `Hash`, `Set`, `ZSet`, `List`. 
+1. Support *String*, *Hash*, *Set*, *ZSet*, *List*. 
 2. Implement commands of data types mentioned above.
 
 ## Chagelog 
 
 ### v0.1.2 - 2023-07-11
+
 Implemented commands: 
-    - Generic: `DEL`, `TYPE`, `EXISTS`
-    - String: `SET`, `GET`, `SETNX`, `STRLEN`
-    - List: `LLEN`, `LPUSH`, `RPUSH`
-    - Set: `SADD`, `SISMEMBER`, `SMEMBERS`, `SCARD`
+- *Generic*: **DEL**, **TYPE**, **EXISTS**
+- *String*: **SET**, **GET**, **SETNX**, **STRLEN**
+- *List*: **LLEN**, **LPUSH**, **RPUSH**
+- *Set*: **SADD**, **SISMEMBER**, **SMEMBERS**, **SCARD**
 
 ## Contributing
 
