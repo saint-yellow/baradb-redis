@@ -64,3 +64,21 @@ func strappend(ds *ds.DS, args ...[]byte) (any, error) {
 	key, value := args[0], args[1]
 	return ds.Append(key, value)
 }
+
+func getdel(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 1 {
+		return nil, newErrWrongNumberOfArguments("getdel")
+	}
+
+	key := args[0]
+	return ds.GetDel(key)
+}
+
+func getset(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 2 {
+		return nil, newErrWrongNumberOfArguments("getset")
+	}
+
+	key, value := args[0], args[1]
+	return ds.GetSet(key, value)
+}

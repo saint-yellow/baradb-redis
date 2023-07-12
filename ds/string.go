@@ -70,6 +70,29 @@ func (ds *DS) Get(key []byte) ([]byte, error) {
 	return payload, nil
 }
 
+// GetDel redis GETDEL
+func (ds *DS) GetDel(key []byte) ([]byte, error) {
+	value, err := ds.Get(key)
+	if err != nil {
+		return nil, err
+	}
+	err = ds.Del(key)
+	if err != nil {
+		return nil, err
+	}
+	return value, nil
+}
+
+// GetSet redis GETSET
+func (ds *DS) GetSet(key, value []byte) ([]byte, error) {
+	oldValue, _ := ds.Get(key)
+	err := ds.Set(key, value, 0)
+	if err != nil {
+		return nil, err
+	}
+	return oldValue, nil
+}
+
 // StrLen redis STRLEN
 func (ds *DS) StrLen(key []byte) int {
 	value, err := ds.Get(key)

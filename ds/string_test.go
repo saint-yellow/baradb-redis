@@ -156,3 +156,55 @@ func TestDS_Append(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, len(value2), length)
 }
+
+func TestDS_GetDel(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value []byte
+	var err error
+
+	key := []byte("key001")
+
+	value, err = ds.GetDel(key)
+	assert.Nil(t, err)
+	assert.Nil(t, value)
+
+	err = ds.Set(key, []byte("value001"), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.GetDel(key)
+	assert.Nil(t, err)
+	assert.EqualValues(t, []byte("value001"), value)
+
+	value, err = ds.GetDel(key)
+	assert.Nil(t, err)
+	assert.Nil(t, value)
+}
+
+func TestDS_GetSet(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value []byte
+	var err error
+
+	key := []byte("key001")
+	value1, value2 := []byte("value001"), []byte("value002")
+
+	value, err = ds.GetSet(key, value1)
+	assert.Nil(t, err)
+	assert.Nil(t, value)
+
+	value, err = ds.Get(key)
+	assert.Nil(t, err)
+	assert.EqualValues(t, value1, value)
+
+	value, err = ds.GetSet(key, value2)
+	assert.Nil(t, err)
+	assert.EqualValues(t, value1, value)
+
+	value, err = ds.Get(key)
+	assert.Nil(t, err)
+	assert.EqualValues(t, value2, value)
+}
