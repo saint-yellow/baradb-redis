@@ -9,4 +9,6 @@ var (
 	ErrExpiredValue         = errors.New("the value is expired")
 	ErrNilValue             = errors.New("the value is nill")
 	ErrUnsupportedOperation = errors.New("unsupported operation")
+	ErrInvalidInteger       = errors.New("value is not a valid integer or out of range")
+	ErrInvalidFloat         = errors.New("value is not a valid float or out of range")
 )

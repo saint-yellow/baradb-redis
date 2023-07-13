@@ -15,13 +15,18 @@ var supportedCommands = map[string]commandHandler{
 	"exists": exists,
 
 	// commands available for string only
-	"set":    set,
-	"get":    get,
-	"getdel": getdel,
-	"getset": getset,
-	"setnx":  setnx,
-	"strlen": strlen,
-	"append": strappend,
+	"append":      strappend,
+	"decr":        decr,
+	"decrby":      decrby,
+	"get":         get,
+	"getdel":      getdel,
+	"getset":      getset,
+	"incr":        incr,
+	"incrby":      incrby,
+	"incrbyfloat": incrbyfloat,
+	"set":         set,
+	"setnx":       setnx,
+	"strlen":      strlen,
 
 	// commands available for list only
 	"llen":  llen,

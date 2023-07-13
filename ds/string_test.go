@@ -1,7 +1,9 @@
 package ds
 
 import (
+	"math"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -207,4 +209,195 @@ func TestDS_GetSet(t *testing.T) {
 	value, err = ds.Get(key)
 	assert.Nil(t, err)
 	assert.EqualValues(t, value2, value)
+}
+
+func TestDS_Incr(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value int64
+	var err error
+
+	key1, key2 := []byte("key001"), []byte("key002")
+	value1, value2 := []byte("10"), []byte("abc")
+
+	value, err = ds.Incr(key1)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(1), value)
+
+	err = ds.Set(key1, value1, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Incr(key1)
+	assert.Nil(t, err)
+	assert.EqualValues(t, int64(11), value)
+
+	err = ds.Set(key2, value2, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Incr(key2)
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+
+	err = ds.Set(key2, []byte(strconv.FormatInt(math.MaxInt64, 10)), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Incr(key2)
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+}
+
+func TestDS_IncrBy(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value int64
+	var err error
+
+	key1, key2 := []byte("key001"), []byte("key002")
+	value1, value2 := []byte("10"), []byte("abc")
+
+	value, err = ds.IncrBy(key1, []byte("2"))
+	assert.Nil(t, err)
+	assert.Equal(t, int64(2), value)
+
+	err = ds.Set(key1, value1, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrBy(key1, []byte("-2"))
+	assert.Nil(t, err)
+	assert.EqualValues(t, int64(8), value)
+
+	err = ds.Set(key2, value2, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrBy(key2, []byte("2"))
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+
+	err = ds.Set(key2, []byte(strconv.FormatInt(math.MaxInt64, 10)), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrBy(key2, []byte("2"))
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+}
+
+func TestDS_IncrByFloat(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value float64
+	var err error
+
+	key1, key2 := []byte("key001"), []byte("key002")
+	value1, value2 := []byte("10"), []byte("abc")
+
+	value, err = ds.IncrByFloat(key1, []byte("3.14"))
+	assert.Nil(t, err)
+	assert.Equal(t, float64(3.14), value)
+
+	err = ds.Set(key1, value1, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrByFloat(key1, []byte("-0.2"))
+	assert.Nil(t, err)
+	assert.EqualValues(t, float64(9.8), value)
+
+	value, err = ds.IncrByFloat(key1, value2)
+	assert.ErrorIs(t, err, ErrInvalidFloat)
+	assert.Equal(t, float64(0), value)
+
+	err = ds.Set(key2, value2, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrByFloat(key2, []byte("2"))
+	assert.ErrorIs(t, err, ErrInvalidFloat)
+	assert.Equal(t, float64(0), value)
+
+	err = ds.Set(key2, utils.Float64ToBytes(math.MaxFloat64), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrByFloat(key2, []byte("2.718"))
+	assert.ErrorIs(t, err, ErrInvalidFloat)
+	assert.Equal(t, float64(0), value)
+
+	err = ds.Set(key2, utils.Float64ToBytes(-math.MaxFloat64), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.IncrByFloat(key2, []byte("-2.718"))
+	assert.ErrorIs(t, err, ErrInvalidFloat)
+	assert.Equal(t, float64(0), value)
+}
+
+func TestDS_Decr(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value int64
+	var err error
+
+	key1, key2 := []byte("key001"), []byte("key002")
+	value1, value2 := []byte("10"), []byte("abc")
+
+	value, err = ds.Decr(key1)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(-1), value)
+
+	err = ds.Set(key1, value1, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Decr(key1)
+	assert.Nil(t, err)
+	assert.EqualValues(t, int64(9), value)
+
+	err = ds.Set(key2, value2, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Decr(key2)
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+
+	err = ds.Set(key2, []byte(strconv.FormatInt(math.MinInt64, 10)), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.Decr(key2)
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+}
+
+func TestDS_DecrBy(t *testing.T) {
+	ds, _ := New(testingDBOptions)
+	defer destroyDS(ds, testingDBOptions.Directory)
+
+	var value int64
+	var err error
+
+	key1, key2 := []byte("key001"), []byte("key002")
+	value1, value2 := []byte("10"), []byte("abc")
+
+	value, err = ds.DecrBy(key1, []byte("2"))
+	assert.Nil(t, err)
+	assert.Equal(t, int64(-2), value)
+
+	err = ds.Set(key1, value1, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.DecrBy(key1, []byte("-2"))
+	assert.Nil(t, err)
+	assert.EqualValues(t, int64(12), value)
+
+	err = ds.Set(key2, value2, 0)
+	assert.Nil(t, err)
+
+	value, err = ds.DecrBy(key2, []byte("2"))
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
+
+	err = ds.Set(key2, []byte(strconv.FormatInt(math.MinInt64, 10)), 0)
+	assert.Nil(t, err)
+
+	value, err = ds.DecrBy(key2, []byte("2"))
+	assert.ErrorIs(t, err, ErrInvalidInteger)
+	assert.Equal(t, int64(0), value)
 }

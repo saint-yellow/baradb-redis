@@ -2,9 +2,13 @@ package ds
 
 import (
 	"encoding/binary"
+	"errors"
+	"math"
+	"strconv"
 	"time"
 
 	"github.com/saint-yellow/baradb"
+	"github.com/saint-yellow/baradb/utils"
 )
 
 // Set redis SET
@@ -123,4 +127,114 @@ func (ds *DS) Append(key, value []byte) (int, error) {
 		return 0, err
 	}
 	return len(oldValue) + len(value), nil
+}
+
+// DecrBy redis DECRBY
+func (ds *DS) DecrBy(key, increment []byte) (int64, error) {
+	n, err := strconv.ParseInt(string(increment), 10, 64)
+	if err != nil {
+		return 0, ErrInvalidInteger
+	}
+	return ds.setInteger(key, -n)
+}
+
+// Decr redis DECR
+func (ds *DS) Decr(key []byte) (int64, error) {
+	return ds.setInteger(key, -1)
+}
+
+// Incr redis INCR
+func (ds *DS) Incr(key []byte) (int64, error) {
+	return ds.setInteger(key, 1)
+}
+
+// IncrBy redis INCRBY
+func (ds *DS) IncrBy(key, increment []byte) (int64, error) {
+	n, err := strconv.ParseInt(string(increment), 10, 64)
+	if err != nil {
+		return 0, ErrInvalidInteger
+	}
+	return ds.setInteger(key, n)
+}
+
+// IncrByFloat redis INCRBYFLOAT
+func (ds *DS) IncrByFloat(key, increment []byte) (float64, error) {
+	n, err := strconv.ParseFloat(string(increment), 64)
+	if err != nil {
+		return 0, ErrInvalidFloat
+	}
+	if n < -math.MaxFloat64 || n > math.MaxFloat64 {
+		return 0, ErrInvalidFloat
+	}
+	return ds.setFloat(key, n)
+}
+
+func (ds *DS) setInteger(key []byte, n int64) (int64, error) {
+	var number int64
+	var err error
+
+	value, err := ds.Get(key)
+	if err != nil && !errors.Is(err, baradb.ErrKeyNotFound) {
+		return 0, err
+	}
+
+	if len(value) == 0 {
+		number = 0
+	} else {
+		number, err = strconv.ParseInt(string(value), 10, 64)
+		if err != nil {
+			return 0, ErrInvalidInteger
+		}
+	}
+
+	if n < math.MinInt64 || n > math.MaxInt64 {
+		return 0, ErrInvalidInteger
+	}
+
+	condition1 := n < 0 && number < 0 && n < math.MinInt64-number
+	condition2 := n > 0 && number > 0 && n > math.MaxInt64-number
+	if condition1 || condition2 {
+		return 0, ErrInvalidInteger
+	}
+
+	number += n
+	buffer := []byte(strconv.FormatInt(number, 10))
+	err = ds.Set(key, buffer, 0)
+	if err != nil {
+		return 0, err
+	}
+	return number, nil
+}
+
+func (ds *DS) setFloat(key []byte, n float64) (float64, error) {
+	var number float64
+	var err error
+
+	value, err := ds.Get(key)
+	if err != nil && !errors.Is(err, baradb.ErrKeyNotFound) {
+		return 0, err
+	}
+
+	if len(value) == 0 {
+		number = 0
+	} else {
+		number, err = strconv.ParseFloat(string(value), 64)
+		if err != nil {
+			return 0, ErrInvalidFloat
+		}
+	}
+
+	condition1 := n < 0 && number < 0 && n < math.SmallestNonzeroFloat64-number
+	condition2 := n > 0 && number > 0 && n > math.MaxFloat64-number
+	if condition1 || condition2 {
+		return 0, ErrInvalidFloat
+	}
+
+	number += n
+	buffer := utils.Float64ToBytes(number)
+	err = ds.Set(key, buffer, 0)
+	if err != nil {
+		return 0, err
+	}
+	return number, nil
 }

@@ -82,3 +82,48 @@ func getset(ds *ds.DS, args ...[]byte) (any, error) {
 	key, value := args[0], args[1]
 	return ds.GetSet(key, value)
 }
+
+func incr(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 1 {
+		return nil, newErrWrongNumberOfArguments("incr")
+	}
+
+	key := args[0]
+	return ds.Incr(key)
+}
+
+func incrby(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 2 {
+		return nil, newErrWrongNumberOfArguments("incrby")
+	}
+
+	key, increment := args[0], args[1]
+	return ds.IncrBy(key, increment)
+}
+
+func incrbyfloat(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 2 {
+		return nil, newErrWrongNumberOfArguments("incrbyfloat")
+	}
+
+	key, increment := args[0], args[1]
+	return ds.IncrByFloat(key, increment)
+}
+
+func decr(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 1 {
+		return nil, newErrWrongNumberOfArguments("decr")
+	}
+
+	key := args[0]
+	return ds.Decr(key)
+}
+
+func decrby(ds *ds.DS, args ...[]byte) (any, error) {
+	if len(args) != 2 {
+		return nil, newErrWrongNumberOfArguments("decrby")
+	}
+
+	key, increment := args[0], args[1]
+	return ds.DecrBy(key, increment)
+}
